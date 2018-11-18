@@ -1,0 +1,105 @@
+<html>
+
+<head>
+  <base href="/">
+  <title>Hibiki</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:image" content="hibiki.svg" />
+  <meta property="og:title" content="Hibiki" />
+  <meta property="og:description" content="Hibiki: sound, echo" />
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="css/app.css">
+  <meta name="theme-color" content="#000">
+
+  <!-- TODO add manifest here -->
+  <link rel="manifest" href="/manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hibiki">
+  <link rel="apple-touch-icon" href="/img/icons/icon-152x152.png">
+  <meta name="msapplication-TileImage" content="/img/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#000000">
+  <noscript>
+      <div>This page requires javascript to work properly</div>>
+    </noscript>  
+</head>
+
+<body>
+  <main class="main" hidden>
+    <div id="view-change-button" class="button" onclick="PayloadPanel.togglePanel(event, this)" style="display: none;">
+      <img class="option full" src="../img/Chat Button.png">
+      <img class="option not-full" src="../img/Code Button.png">
+    </div>
+    <div id="contentParent" class="responsive-columns-wrapper">
+      <div id="chat-column-holder" class="responsive-column content-column">
+        <div class="chat-column">
+          <div id="scrollingChat"></div>
+          <p class="user-typing" id="user-typing-field"></p>
+          <label for="textInput" class="inputOutline">
+            <input id="textInput" class="input responsive-column" placeholder="Escribe aquí" type="text" onkeydown="ConversationPanel.inputKeyDown(event, this)" autofocus>
+          </label>
+          <!-- <div class="disclaimer">
+          * This system is for demonstration purposes only and is not intended to process Personal Data. No Personal
+          Data is to be entered
+          into this system as it may not have the necessary controls in place to meet the requirements of the General
+          Data Protection
+          Regulation (EU) 2016/679.
+        </div> -->
+        </div>
+      </div>
+      <!-- <div id="payload-column" class="fixed-column content-column" style="display:none">
+      <div id="payload-initial-message">
+        Type something to see the output
+      </div>
+      <div id="payload-request" class="payload"></div>
+      <div id="payload-response" class="payload"></div>
+    </div> -->
+    </div>
+  </main>
+  <div class="loader">
+    <svg viewBox="0 0 32 32" width="32" height="32">
+      <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+    </svg>
+  </div>
+  <script src="js/common.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/conversation.js"></script>
+  <script src="js/payload.js"></script>
+  <script src="js/global.js"></script>
+  <!-- <script type="text/javascript" src="https://cdn.rawgit.com/watson-developer-cloud/watson-developer-cloud.github.io/master/analytics.js"></script> -->
+  <!-- <script>
+    // if('serviceWorker' in navigator) {
+    //   navigator.serviceWorker
+    //            .register('/sw.js')
+    //            .then(function() { console.log("Service Worker Registered"); });
+    // }
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+          .register('/service-worker.js')
+          .then(function() { console.log("Service Worker Registered"); });
+        });
+      }
+    </script> -->
+  <script>
+    var isLoading = true;
+    var spinner = document.querySelector('.loader');
+    var container = document.querySelector('.main');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('./service-worker.js')
+        .then(function () {
+          if (isLoading) {
+            spinner.setAttribute('hidden', true);
+            container.removeAttribute('hidden');
+            isLoading = false;
+          }
+          console.log('Service Worker Registered');
+        });
+    }
+  </script>
+</body>
+
+</html>
